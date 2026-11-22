@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -56,5 +57,11 @@ public class Aimbot implements ClientModInitializer {
 
         mc.player.setYaw(mc.player.getYaw() + dYaw);
         mc.player.setPitch(MathHelper.clamp(mc.player.getPitch() + dPitch, -90f, 90f));
+
+        if (bestSq <= 9.0 && mc.interactionManager != null
+                && mc.player.getAttackCooldownProgress(0.5f) >= 1.0f) {
+            mc.interactionManager.attackEntity(mc.player, best);
+            mc.player.swingHand(Hand.MAIN_HAND);
+        }
     }
 }
