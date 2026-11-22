@@ -16,8 +16,8 @@ public class Aimbot implements ClientModInitializer {
     public static boolean enabled = false;
     public static final double RANGE = 8.0;
     // Чем меньше SMOOTH и MAX_TURN, тем плавнее и медленнее наводка
-    private static final float SMOOTH = 0.15f;
-    private static final float MAX_TURN = 6f;
+    private static final float SMOOTH = 0.6f;
+    private static final float MAX_TURN = 40f;
 
     @Override
     public void onInitializeClient() {
