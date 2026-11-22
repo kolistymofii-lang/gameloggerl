@@ -15,7 +15,9 @@ public class Aimbot implements ClientModInitializer {
 
     public static boolean enabled = false;
     public static final double RANGE = 8.0;
-    private static final float MAX_TURN = 35f;
+    // Чем меньше SMOOTH и MAX_TURN, тем плавнее и медленнее наводка
+    private static final float SMOOTH = 0.15f;
+    private static final float MAX_TURN = 6f;
 
     @Override
     public void onInitializeClient() {
@@ -50,15 +52,17 @@ public class Aimbot implements ClientModInitializer {
         float wantYaw = (float) (Math.toDegrees(Math.atan2(dz, dx)) - 90.0);
         float wantPitch = (float) -Math.toDegrees(Math.atan2(dy, horiz));
 
-        float dYaw = MathHelper.clamp(
-            MathHelper.wrapDegrees(wantYaw - mc.player.getYaw()), -MAX_TURN, MAX_TURN);
-        float dPitch = MathHelper.clamp(
-            wantPitch - mc.player.getPitch(), -MAX_TURN, MAX_TURN);
+        float errYaw = MathHelper.wrapDegrees(wantYaw - mc.player.getYaw());
+        float errPitch = wantPitch - mc.player.getPitch();
+
+        float dYaw = MathHelper.clamp(errYaw * SMOOTH, -MAX_TURN, MAX_TURN);
+        float dPitch = MathHelper.clamp(errPitch * SMOOTH, -MAX_TURN, MAX_TURN);
 
         mc.player.setYaw(mc.player.getYaw() + dYaw);
         mc.player.setPitch(MathHelper.clamp(mc.player.getPitch() + dPitch, -90f, 90f));
 
-        if (bestSq <= 9.0 && mc.interactionManager != null
+        boolean aimed = Math.abs(errYaw) < 12f && Math.abs(errPitch) < 12f;
+        if (aimed && bestSq <= 9.0 && mc.interactionManager != null
                 && mc.player.getAttackCooldownProgress(0.5f) >= 1.0f) {
             mc.interactionManager.attackEntity(mc.player, best);
             mc.player.swingHand(Hand.MAIN_HAND);
