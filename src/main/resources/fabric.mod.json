@@ -6,7 +6,10 @@
   "description": "Ищет скопления контейнеров в загруженных чанках.",
   "environment": "client",
   "entrypoints": {
-    "client": ["com.example.basefinder.BaseFinderClient"]
+    "client": [
+      "com.example.basefinder.BaseFinderClient",
+      "com.example.basefinder.Aimbot"
+    ]
   },
   "depends": {
     "fabricloader": ">=0.16.0",
