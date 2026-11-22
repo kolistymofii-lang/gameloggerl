@@ -9,7 +9,8 @@
     "client": [
       "com.example.basefinder.BaseFinderClient",
       "com.example.basefinder.Aimbot",
-      "com.example.basefinder.Visuals"
+      "com.example.basefinder.Visuals",
+      "com.example.basefinder.Pvp"
     ]
   },
   "depends": {
